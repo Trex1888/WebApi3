@@ -13,9 +13,21 @@ namespace WebApi3.Repositories
 			_context = context;
 		}
 
+		public bool CreateOwner(Owner owner)
+		{
+			_context.Add(owner);
+			return Save();
+		}
+
+		public bool DeleteOwner(Owner owner)
+		{
+			_context.Remove(owner);
+			return Save();
+		}
+
 		public Owner GetOwner(int ownerId)
 		{
-			return _context.Owners.Where(e => e.Id == ownerId).FirstOrDefault();
+			return _context.Owners.Where(o => o.Id == ownerId).FirstOrDefault();
 		}
 
 		public ICollection<Owner> GetOwnerOfAPokemon(int pokeId)
@@ -36,6 +48,18 @@ namespace WebApi3.Repositories
 		public bool OwnerExists(int ownerId)
 		{
 			return _context.Owners.Any(o => o.Id == ownerId);
+		}
+
+		public bool Save()
+		{
+			var saved = _context.SaveChanges();
+			return saved > 0 ? true : false;
+		}
+
+		public bool UpdateOwner(Owner owner)
+		{
+			_context.Update(owner);
+			return Save();
 		}
 	}
 }

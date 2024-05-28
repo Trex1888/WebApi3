@@ -7,11 +7,11 @@ namespace WebApi3.Repositories
 	public class CategoryRepository : ICategoryRepository
 	{
 		private DataContext _context;
-
 		public CategoryRepository(DataContext context)
 		{
 			_context = context;
 		}
+
 		public bool CategoryExists(int id)
 		{
 			return _context.Categories.Any(c => c.Id == id);
@@ -20,7 +20,12 @@ namespace WebApi3.Repositories
 		public bool CreateCategory(Category category)
 		{
 			_context.Add(category);
-			_context.SaveChanges();
+			return Save();
+		}
+
+		public bool DeleteCategory(Category category)
+		{
+			_context.Remove(category);
 			return Save();
 		}
 
@@ -43,6 +48,12 @@ namespace WebApi3.Repositories
 		{
 			var saved = _context.SaveChanges();
 			return saved > 0 ? true : false;
+		}
+
+		public bool UpdateCategory(Category category)
+		{
+			_context.Update(category);
+			return Save();
 		}
 	}
 }
